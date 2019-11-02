@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册页面</title>
+    
+    <style>
+    	body{
+    		margin: 0px;
+    		padding: 0px;
+    	}
+    	.index{
+    		min-width: 1200px;
+    	}
+    	.index .top{
+    		min-width: 1200px;
+    		background-color: #eeeeee;
+    		box-shadow: 1px 1px 1px #e0d5d5;
+    		border-bottom: 1px solid #f1f1f1;
+    	}
+    	.index .top .index-top{
+    		width: 1200px;
+    		margin: auto;
+    		height: 30px;
+    		text-align: left;
+    		line-height: 30px;
+    	}
+    	.index .content{
+    		margin-top: 10%;
+    		min-width: 1200px;
+    	}
+    	.index .content .index-cont{
+    		width: 1200px;
+    		margin: auto;
+    	}
+    	.index-cont .cont-input{
+    		padding: 10px;
+    		width: 500px;
+    		margin: auto;
+    	}
+    	.cont-input .input{
+    		margin: 15px;
+    		width: 100%;
+    	}
+    	.input .text{
+    		text-align: right;
+    		width: 100px;
+    		display: inline-block;
+    	}
+    	.input input{
+    		width: 200px;
+    		padding: 5px;
+    		border: 1px solid #9bb1d8;
+    	}
+    	.input .btn{
+    		width: 210px;
+    		padding: 5px;
+    		border: 1px solid #9bb1d8;
+    		background-color: #51b169;
+    		border-radius: 6px;
+    		color: #fff;
+    		font-size: 16px;
+    	}
+    	.input .btn:hover{
+    		cursor: pointer;
+    		background-color: #9BB1D8;
+    	}
+		.input .btn1{
+			background-color: #fff;
+			color: #4172ca;
+			border: 0px;
+		}
+		.input .btn1:hover{
+			cursor: pointer;
+		}
+		.input img{
+			width: 170px;
+			height: 40px;
+		}
+    </style>
+</head>
+<body>
+	<div class="index">
+		<div class="top">
+			<div class="index-top">
+				新用户注册
+			</div>
+		</div>
+		<div class="content">
+			<div class="index-cont">
+				<div class="cont-input" id="form">
+					<div class="input">
+						<div class="text">用户名：</div>
+						<input name="loginName" />
+					</div>
+					<div class="input">
+						<div class="text">登录密码：</div>
+						<input type="password" name="loginPass" />
+					</div>
+					<div class="input">
+						<div class="text">确认密码：</div>
+						<input type="password" class="loginPass2" />
+					</div>
+					<div class="input">
+						<div class="text">邮箱：</div>
+						<input name="emali"/>
+					</div>
+					<div class="input">
+						<div class="text"></div>
+						<img id="imgObj" alt="验证码" src="/validateCode" οnclick="changeImg()"/>
+						<button class="btn1" onclick="changeImg()">换一张</button>
+					</div>
+					<div class="input">
+						<div class="text">图形验证码：</div>
+						<input type="text" id="code" name="imgCode" class="form-control" style="width:250px;"/>
+					</div>
+					<div class="input">
+						<div class="text"></div>
+						<button onclick="register()" class="btn">立即注册</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="/js/afquery.js"></script>
+<script>
+	function register() {
+		var userForm = new AfForm('.content');
+		var user = userForm.get();
+		var loginPass2 = $('.loginPass2').val();
+		if (user.loginName == '' || user.loginName.length < 1) {
+			alert('用户名不得为空!');
+			return;
+		}
+		if (user.loginPass == '' || user.loginPass.length < 1
+				|| loginPass2 == '' || loginPass2.length < 1) {
+			alert('密码不得为空!');
+			return;
+		}
+		if (user.emali == '' || user.emali.length < 1) {
+			alert('邮箱不得为空!');
+			return;
+		} else {
+			if(!user.emali.match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/)) {
+				alert("邮箱格式不正确！请重新输入");
+				return;
+			}
+		}
+		if (user.imgCode == '' || user.imgCode.length < 1) {
+			alert('图形验证码不得为空!');
+			return;
+		}
+		if (user.loginName.length < 2 || user.loginName.length > 15) {
+			alert('请将用户名控制在2-15字数之间!');
+			return;
+		}
+		if (user.loginPass.length < 2 || user.loginPass.length > 15
+				|| loginPass2.length < 2 || loginPass2.length > 15) {
+			alert('请将密码控制在2-15字数之间!');
+			return;
+		}
+		if (user.loginPass != loginPass2) {
+			alert('两次密码输入不一致!');
+			return;
+		}
+		Af.rest('register.api', user, function (data) {
+			alert('注册成功!!! 已给您发送激活码! 请在邮箱进行激活!');
+			location.href = "/login.html";
+		});
+	}
+
+	// 刷新图片
+	function changeImg() {
+		var imgSrc = $("#imgObj");
+		var src = imgSrc.attr("src");
+		imgSrc.attr("src", changeUrl(src));
+	}
+	//为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳
+	function changeUrl(url) {
+		var timestamp = (new Date()).valueOf();
+		var index = url.indexOf("?",url);
+		if (index > 0) {
+
+		}
+		if ((url.indexOf("&") >= 0)) {
+			url = url + "×tamp=" + timestamp;
+		} else {
+			url = url + "?timestamp=" + timestamp;
+		}
+		return url;
+	}
+
+</script>
+</html>

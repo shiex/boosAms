@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbb.dao.CategoryDao">
+  <resultMap id="BaseResultMap" type="com.xbb.entity.Category">
+    <id column="category_id" property="categoryId" />
+    <result column="category_name" property="categoryName" />
+    <result column="category_desc" property="categoryDesc" />
+    <result column="order_by" property="orderBy" />
+  </resultMap>
+
+  <resultMap id="classifyMap" extends="BaseResultMap" type="com.xbb.entity.Category">
+    <collection property="classifyList" ofType="com.xbb.entity.Classify">
+      <id column="classify_id" property="classifyId" />
+      <result column="classify_name" property="classifyName" />
+      <result column="classify_desc" property="classifyDesc" />
+    </collection>
+  </resultMap>
+
+  <select id="selectAllCategoryClassify" resultMap="classifyMap">
+    select *
+    from category t1
+    left join classify t2 on t1.category_id = t2.category_id
+    order by t1.`category_id` asc,t2.`classify_id` asc
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select * from category
+  </select>
+
+  <select id="selectCountById" resultType="java.lang.Integer">
+    select count(*) from category t1
+    left join classify t2 on t1.category_id = t2.category_id
+  </select>
+
+  <delete id="deleteById">
+    delete from category where category_id = #{id}
+  </delete>
+
+  <select id="selectOneById" resultMap="BaseResultMap">
+    select * from category where category_id = #{id}
+  </select>
+
+  <insert id="insert">
+    insert into category (category_name, category_desc)
+    values (#{categoryName}, #{categoryDesc})
+  </insert>
+
+  <update id="updateById">
+    update category
+    <set>
+      <if test="categoryName != null">
+        category_name = #{categoryName},
+      </if>
+      <if test="classifyDesc != null">
+        category_desc = #{categoryDesc},
+      </if>
+    </set>
+    where category_id = #{categoryId}
+  </update>
+</mapper>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbb.dao.UserDao">
+    <resultMap id="BaseResultMap" type="com.xbb.entity.User">
+        <id column="u_id" property="uId"/>
+        <result column="login_name" property="loginName"/>
+        <result column="login_pass" property="loginPass"/>
+        <result column="emali" property="emali"/>
+        <result column="status" property="status"/>
+        <result column="activation_code" property="activationCode"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.xbb.entity.User" useGeneratedKeys="true" keyProperty="uId">
+        insert into `user`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="loginName != null">
+                login_name,
+            </if>
+            <if test="loginPass != null">
+                login_pass,
+            </if>
+            <if test="emali != null">
+                emali,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="activationCode != null">
+                activation_code,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="loginName != null">
+                #{loginName},
+            </if>
+            <if test="loginPass != null">
+                #{loginPass},
+            </if>
+            <if test="emali != null">
+                #{emali},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="activationCode != null">
+                #{activationCode},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectUserByName" resultMap="BaseResultMap">
+      select * from `user` where login_name = #{loginName}
+    </select>
+
+    <select id="selectCount" resultType="java.lang.Integer">
+      select count(emali) from `user` where emali = #{emali}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+    select * from `user`
+    </select>
+
+    <select id="select" resultMap="BaseResultMap">
+    select * from `user`` where u_id = 1
+    </select>
+
+    <select id="selectPass" resultType="java.lang.Integer">
+    select count(login_pass) from `user`
+    where u_id = #{userId} and login_pass = #{loginPass}
+    </select>
+
+    <update id="updateById">
+        update `user`
+        <set>
+            <if test="loginPass != null">
+                login_pass = #{loginPass},
+            </if>
+            <if test="activationCode != null">
+                activation_code = #{activationCode},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        where u_id = #{uId}
+    </update>
+
+</mapper>

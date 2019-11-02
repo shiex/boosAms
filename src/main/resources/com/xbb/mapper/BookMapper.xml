@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbb.dao.BookDao">
+  <resultMap id="BaseResultMap" type="com.xbb.entity.Book">
+    <id column="b_id" property="bId" />
+    <result column="b_name" property="bName" />
+    <result column="author" property="author" />
+    <result column="price" property="price" />
+    <result column="curr_price" property="currPrice" />
+    <result column="discount" property="discount" />
+    <result column="press" property="press" />
+    <result column="publish_time" property="publishTime" />
+    <result column="edition" property="edition" />
+    <result column="page_num" property="pageNum" />
+    <result column="word_num" property="wordNum" />
+    <result column="print_time" property="printTime" />
+    <result column="book_size" property="bookSize" />
+    <result column="paper" property="paper" />
+    <result column="image_uri" property="imageUri" />
+    <result column="order_by" property="orderBy" />
+    <result column="classify_id" property="classifyId" />
+    <result column="isbn" property="isbn" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.xbb.entity.Book" useGeneratedKeys="true" keyProperty="id">
+     insert into book
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bName != null">
+        b_name,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="currPrice != null">
+        curr_price,
+      </if>
+      <if test="discount != null">
+        discount,
+      </if>
+      <if test="press != null">
+        press,
+      </if>
+      <if test="publishTime != null">
+        publish_time,
+      </if>
+      <if test="edition != null">
+        edition,
+      </if>
+      <if test="pageNum != null">
+        page_num,
+      </if>
+      <if test="wordNum != null">
+        word_num,
+      </if>
+      <if test="printTime != null">
+        print_time,
+      </if>
+      <if test="bookSize != null">
+        book_size,
+      </if>
+      <if test="paper != null">
+        paper,
+      </if>
+      <if test="imageUri != null">
+        image_uri,
+      </if>
+      <if test="classifyId != null">
+        classify_id,
+      </if>
+      <if test="isbn != null">
+        isbn,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bName != null">
+        #{bName},
+      </if>
+      <if test="author != null">
+        #{author},
+      </if>
+      <if test="price != null">
+        #{price},
+      </if>
+      <if test="currPrice != null">
+        #{currPrice},
+      </if>
+      <if test="discount != null">
+        #{discount},
+      </if>
+      <if test="press != null">
+        #{press},
+      </if>
+      <if test="publishTime != null">
+        #{publishTime},
+      </if>
+      <if test="edition != null">
+        #{edition},
+      </if>
+      <if test="pageNum != null">
+        #{pageNum},
+      </if>
+      <if test="wordNum != null">
+        #{wordNum},
+      </if>
+      <if test="printTime != null">
+        #{printTime},
+      </if>
+      <if test="bookSize != null">
+        #{bookSize},
+      </if>
+      <if test="paper != null">
+        #{paper},
+      </if>
+      <if test="imageUri != null">
+        #{imageUri},
+      </if>
+      <if test="classifyId != null">
+        #{classifyId},
+      </if>
+      <if test="isbn != null">
+        #{isbn},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="selectOneById" resultMap="BaseResultMap">
+    select * from book where b_id = #{id}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select * from book
+  </select>
+
+  <select id="selectCountByClassifyId" resultType="java.lang.Integer">
+    select count(*) from book where classify_id = #{classifyId}
+  </select>
+
+  <select id="findBookAll" resultMap="BaseResultMap">
+    select * from book
+    <where>
+      <if test="bName!=null">
+        and b_name like concat(concat('%',#{bName}),'%')
+      </if>
+      <if test="author!=null">
+        and author like concat(concat('%',#{author}),'%')
+      </if>
+      <if test="press!=null">
+        and press like concat(concat('%',#{press}),'%')
+      </if>
+    </where>
+  </select>
+
+  <select id="selectPageHelper" resultMap="BaseResultMap">
+    select * from book where classify_id = #{classifyId}
+    order by b_id asc
+    limit #{page},#{pageSize}
+  </select>
+
+  <delete id="deleteById">
+    delete from book where b_id = #{id}
+  </delete>
+
+  <update id="updateById">
+    update `book`
+    <set>
+      <if test="bName != null">
+        b_ame = #{bName},
+      </if>
+      <if test="imageUri != null">
+        image_uri = #{imageUri},
+      </if>
+      <if test="currPrice != null">
+        curr_price = #{currPrice},
+      </if>
+      <if test="price != null">
+        price = #{price},
+      </if>
+      <if test="discount != null">
+        discount = #{discount},
+      </if>
+      <if test="author != null">
+        author = #{author},
+      </if>
+      <if test="press != null">
+        press = #{press},
+      </if>
+      <if test="publishTime != null">
+        publish_time = #{publishTime},
+      </if>
+      <if test="edition != null">
+        edition = #{edition},
+      </if>
+      <if test="pageNum != null">
+        page_num = #{activationCode},
+      </if>
+      <if test="wordNum != null">
+        word_num = #{loginPass},
+      </if>
+      <if test="printTime != null">
+        print_time = #{printTime},
+      </if>
+      <if test="bookSize != null">
+        book_size = #{bookSize},
+      </if>
+      <if test="paper != null">
+        activation_code = #{activationCode},
+      </if>
+      <if test="classifyId != null">
+        classify_id = #{classifyId},
+      </if>
+    </set>
+    where b_id = #{bId}
+  </update>
+
+</mapper>

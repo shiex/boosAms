@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbb.dao.CartItemDao">
+    <resultMap id="BaseResultMap" type="com.xbb.entity.CartItem">
+        <id column="cart_item_id" property="cartItemId"/>
+        <result column="quantity" property="quantity"/>
+        <result column="b_id" property="bId"/>
+        <result column="u_id" property="uId"/>
+        <result column="order_by" property="orderBy"/>
+    </resultMap>
+
+    <resultMap id="BookResultMap" extends="BaseResultMap" type="com.xbb.entity.CartItem">
+        <association property="book" javaType="com.xbb.entity.Book">
+            <id column="b_id" property="bId"/>
+            <result column="b_name" property="bName"/>
+            <result column="curr_price" property="currPrice"/>
+            <result column="image_uri" property="imageUri"/>
+        </association>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.xbb.entity.CartItem" useGeneratedKeys="true" keyProperty="cartItemId">
+        insert into cart_item (u_id,b_id,quantity)
+        values (#{uId},#{bId},#{quantity})
+    </insert>
+
+    <select id="selectAllByUserId" resultMap="BookResultMap">
+       select
+          t1.cart_item_id,t1.quantity,
+          t2.b_id,t2.b_name,t2.curr_price,t2.image_uri
+       from cart_item t1
+       left join book t2 on t1.b_id = t2.b_id
+       where t1.u_id = #{userId}
+    </select>
+
+    <select id="selectAllByIds" resultMap="BookResultMap">
+        select
+            t1.cart_item_id,t1.quantity,
+            t2.b_id,t2.b_name,t2.curr_price,t2.image_uri
+         from cart_item t1
+         left join book t2 on t1.b_id = t2.b_id
+         where cart_item_id in
+        <foreach collection="list" open="(" close=")" item="item" separator="," >
+            #{item}
+        </foreach>
+    </select>
+
+    <delete id="deleteById">
+        delete from cart_item where cart_item_id = #{id}
+    </delete>
+
+    <delete id="deleteByIds">
+        delete from cart_item where cart_item_id in
+        <foreach collection="list" open="(" close=")" item="item" separator="," >
+            #{item}
+        </foreach>
+    </delete>
+
+    <update id="updateIncreaseQuantity">
+        update cart_item set quantity = quantity + 1 where cart_item_id = #{cartItemId}
+    </update>
+    <update id="updateReduceQuantity">
+        update cart_item set quantity = quantity - 1 where cart_item_id = #{cartItemId}
+    </update>
+
+    <select id="selectOneById" resultMap="BaseResultMap">
+        select * from cart_item where cart_item_id = #{id}
+    </select>
+</mapper>

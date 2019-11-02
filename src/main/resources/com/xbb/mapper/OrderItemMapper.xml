@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbb.dao.OrderItemDao">
+  <resultMap id="BaseResultMap" type="com.xbb.entity.OrderItem">
+    <id column="order_item_id" property="orderItemId" />
+    <result column="quantity" property="quantity" />
+    <result column="subtotal" property="subtotal" />
+    <result column="b_id" property="bId" />
+    <result column="o_id" property="oId" />
+  </resultMap>
+
+  <insert id="insertList">
+    insert into order_item (quantity, subtotal, b_id, o_id) values
+    <foreach collection="list" item="orderItem" separator="," close=";">
+      (#{orderItem.quantity},#{orderItem.subtotal},#{orderItem.bId},#{orderItem.oId})
+    </foreach>
+  </insert>
+
+</mapper>

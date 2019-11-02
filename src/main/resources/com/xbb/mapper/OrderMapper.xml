@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbb.dao.OrderDao">
+    <resultMap id="BaseResultMap" type="com.xbb.entity.Order">
+        <id column="o_id" property="oId"/>
+        <result column="order_time" property="orderTime"/>
+        <result column="total" property="total"/>
+        <result column="status" property="status"/>
+        <result column="address" property="address"/>
+        <result column="u_id" property="uId"/>
+    </resultMap>
+
+    <resultMap id="PayResultMap" extends="BaseResultMap" type="com.xbb.entity.Order">
+        <collection property="orderItemList" ofType="com.xbb.entity.OrderItem">
+            <result column="quantity" property="quantity"/>
+            <result column="subtotal" property="subtotal"/>
+            <result column="b_name" property="book.bName"/>
+            <result column="curr_price" property="book.currPrice"/>
+            <result column="image_uri" property="book.imageUri"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectPayData" resultMap="PayResultMap">
+        select
+          t1.o_id,t1.address,t1.total,t1.order_time,
+          t2.quantity,t2.subtotal,
+          t3.b_name,t3.curr_price,t3.image_uri
+        from `order` t1
+        left join order_item t2 on t1.o_id = t2.o_id
+        left join book t3 on t2.b_id = t3.b_id
+        where t1.o_id = #{orderId}
+    </select>
+
+    <select id="selectPageHelper" resultMap="BaseResultMap">
+        select * from `order` where u_id = #{userId}
+        limit #{page},#{pageSize}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select * from `order` order by o_id asc
+    </select>
+
+    <select id="selectAllByStatus" resultMap="BaseResultMap">
+        select * from `order` where status = #{status}
+        order by o_id asc
+    </select>
+
+    <select id="selectOneById" resultType="com.xbb.entity.Order">
+        select o_id,total from `order` where o_id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.xbb.entity.Order" useGeneratedKeys="true" keyProperty="oId">
+       insert into `order` (u_id,address,total,order_time)
+       values (#{uId},#{address},#{total},#{orderTime})
+    </insert>
+
+    <update id="updateById">
+        update `order` set status = #{status}
+        where o_id = #{oId}
+    </update>
+</mapper>

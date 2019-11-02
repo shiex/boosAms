@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+
+	<!-- 示例
+	<service name="Hello" class="my.HelloApi" /> 
+	<upload name="Hello" class="my.HelloFileUpload" />
+	-->
+
+	<!-- 文件上传 -->
+	<upload name="photoFile" class="com.xbb.web.servlet.PhotoFileUpload" />
+
+	<!-- 注册，登录 -->
+	<service name="register" class="com.xbb.web.servlet.restful.user.RegisterServletApi" />
+	<service name="login" class="com.xbb.web.servlet.restful.user.LoginServletApi" />
+
+	<!-- 用户 -->
+	<service name="updatePass" class="com.xbb.web.servlet.restful.user.PassUpdateServletApi" />
+
+	<!-- 书籍 -->
+	<service name="selectByPageBook" class="com.xbb.web.servlet.restful.user.book.BookSelectServletApi" />
+	<service name="findBookAll" class="com.xbb.web.servlet.restful.user.book.BookFindServletApi" />
+
+	<!-- 购物车 -->
+	<service name="addCartItem" class="com.xbb.web.servlet.restful.user.cartItem.CartItemAddServletApi" />
+	<service name="deleteCartItem" class="com.xbb.web.servlet.restful.user.cartItem.CartItemDeleteServletApi" />
+	<service name="quantityCartItem" class="com.xbb.web.servlet.restful.user.cartItem.CartItemQuantityServletApi" />
+	<service name="accountsCartItem" class="com.xbb.web.servlet.restful.user.cartItem.CartItemAccountsServletApi" />
+
+	<!-- 支付 -->
+	<service name="payAdd" class="com.xbb.web.servlet.restful.user.pay.PayAddServletApi" />
+	<service name="payCall" class="com.xbb.web.servlet.restful.user.pay.PayCallServletApi" />
+	<service name="payConfirm" class="com.xbb.web.servlet.restful.user.pay.PayConfirmServletApi" />
+
+	<!-- 管理员登录 -->
+	<service name="adminLogin" class="com.xbb.web.servlet.restful.admin.AdminLoginServletApi" />
+
+	<!-- 书籍管理 -->
+	<service name="adminSelectByPageBook" class="com.xbb.web.servlet.restful.admin.book.AdminBookSelectServletApi" />
+	<service name="adminFindBookAll" class="com.xbb.web.servlet.restful.admin.book.AdminBookFindServletApi" />
+	<service name="adminBookDelete" class="com.xbb.web.servlet.restful.admin.book.AdminBookDeleteServletApi" />
+	<service name="adminBookEdit" class="com.xbb.web.servlet.restful.admin.book.AdminBookEditServletApi" />
+	<service name="adminBookAdd" class="com.xbb.web.servlet.restful.admin.book.AdminBookAddServletApi" />
+
+	<!-- 分类管理 -->
+	<service name="adminLoadCategory" class="com.xbb.web.servlet.restful.admin.category.AdminCategoryLoadServletApi" />
+	<service name="adminCategoryDelete" class="com.xbb.web.servlet.restful.admin.category.AdminCategoryDeleteServletApi" />
+	<service name="adminClassifyDelete" class="com.xbb.web.servlet.restful.admin.classify.AdminClassifyDeleteServletApi" />
+	<service name="adminLoadClassify" class="com.xbb.web.servlet.restful.admin.classify.AdminClassifyLoadServletApi" />
+	<service name="adminCategorySave" class="com.xbb.web.servlet.restful.admin.category.AdminCategorySaveServletApi" />
+	<service name="adminClassifyAdd" class="com.xbb.web.servlet.restful.admin.classify.AdminClassifyAddServletApi" />
+	<service name="adminCategoryEdit" class="com.xbb.web.servlet.restful.admin.category.AdminCategorEditServletApi" />
+	<service name="adminClassifyEdit" class="com.xbb.web.servlet.restful.admin.classify.AdminClassifyEditServletApi" />
+
+	<!-- 用户管理 -->
+	<service name="adminStatusAdd" class="com.xbb.web.servlet.restful.admin.user.AdminStatusAddServletApi" />
+	<service name="adminStatusDelete" class="com.xbb.web.servlet.restful.admin.user.AdminStatusDeleteServletApi" />
+
+	<!-- 发货 -->
+	<service name="adminFaHuo" class="com.xbb.web.servlet.restful.admin.AdminFaHuoServletApi" />
+</config>

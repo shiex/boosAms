@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>修改密码</title>
+
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+            background-color: #9bcac370;
+        }
+
+        .index {
+            min-width: 1200px;
+        }
+
+        .index .cont {
+            min-width: 1200px;
+        }
+
+        .index .cont .cont-con {
+            width: 1200px;
+            margin: auto;
+            margin-top: 10%;
+        }
+
+        .cont-con .con {
+            width: 500px;
+        }
+
+        .con .item {
+            padding: 10px;
+        }
+
+        .con .inline-block {
+            display: inline-block;
+        }
+
+        .con .text {
+            width: 100px;
+            text-align: right;
+            margin-right: 10px;
+        }
+
+        .con input {
+            width: 200px;
+            padding: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="index">
+    <div class="cont">
+        <div class="cont-con">
+            <div class="con">
+                <div class="item">
+                    <div class="inline-block text">原密码</div>
+                    <input type="password" name="password"/>
+                </div>
+                <div class="item">
+                    <div class="inline-block text" >新密码</div>
+                    <input type="password" name="newPassword"/>
+                </div>
+                <div class="item">
+                    <div class="inline-block text">确认密码</div>
+                    <input type="password" name="newPassword2"/>
+                </div>
+                <div class="item">
+                    <div class="text"></div>
+                    <img id="imgObj" alt="验证码" src="/validateCode" οnclick="changeImg()" style="margin-left: 113px;"/>
+                    <button class="btn1" onclick="changeImg()">换一张</button>
+                </div>
+                <div class="item">
+                    <div class="inline-block text">图形验证码：</div>
+                    <input type="text" id="code" name="imgCode" class="form-control" style="width:50px;"/>
+                </div>
+                <div class="item">
+                    <div class="inline-block text"></div>
+                    <button onclick="upPassowrd()">修改密码</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="/js/afquery.js"></script>
+<script>
+
+    function upPassowrd() {
+        var userForm = new AfForm('.cont');
+        var user = userForm.get();
+        if (user.password == '' || user.password == null) {
+            alert('原始密码不得为空');
+            return;
+        }
+        if (user.newPassword == '' || user.newPassword == null) {
+            alert('新密码不得为空');
+            return;
+        }
+        if (user.newPassword2 == '' || user.newPassword2 == null) {
+            alert('确认密码不得为空');
+            return;
+        }
+        if (user.imgCode == '' || user.imgCode == null) {
+            alert('验证码不得为空');
+            return;
+        }
+        if (user.newPassword != user.newPassword2){
+            alert('2次新密码输入不一致');
+            return;
+        }
+        Af.rest('updatePass.api', user, function (data) {
+            alert('修改成功!');
+        })
+    }
+
+    // 刷新图片
+    function changeImg() {
+        var imgSrc = $("#imgObj");
+        var src = imgSrc.attr("src");
+        imgSrc.attr("src", changeUrl(src));
+    }
+
+    //为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳
+    function changeUrl(url) {
+        var timestamp = (new Date()).valueOf();
+        var index = url.indexOf("?", url);
+        if (index > 0) {
+
+        }
+        if ((url.indexOf("&") >= 0)) {
+            url = url + "×tamp=" + timestamp;
+        } else {
+            url = url + "?timestamp=" + timestamp;
+        }
+        return url;
+    }
+</script>
+</html>

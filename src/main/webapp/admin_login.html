@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>管理员登录页面</title>
+    
+    <style>
+    	body{
+    		margin: 0px;
+    		padding: 0px;
+
+    	}
+    	.index {
+			width: 500px;
+			margin: auto;
+			margin-top: 200px;
+			border-top: 3px solid #eeeeee;
+			padding-top: 30px;
+		}
+		.index input{
+			padding: 6px;
+		}
+		.text{
+			width: 110px;
+			display: inline-block;
+			text-align: right;
+		}
+    </style>
+</head>
+<body>
+    <div class="index">
+		<div>
+			<div class="text">管理员账号：</div>
+			<input name="adminName">
+		</div>
+		<div style="margin-top: 10px">
+			<div class="text">密码：</div>
+			<input name="adminPwd" type="password">
+		</div>
+		<div>
+			<button onclick="login()" style="margin-left: 55px; margin-top: 20px">进入后台</button>
+		</div>
+    </div>
+</body>
+
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/afquery.js"></script>
+<script>
+	function login() {
+		var adminForm = new AfForm('.index');
+		var admin = adminForm.get();
+		if (admin.adminName == '' || admin.adminName == null) {
+			alert('管理员账号不得为空');
+			return;
+		}
+		if (admin.adminPwd == '' || admin.adminPwd == null) {
+			alert('管理员密码不得为空');
+			return;
+		}
+		Af.rest('adminLogin.api', admin, function (data) {
+			location.href = '/admin/index.html';
+		})
+	}
+</script>
+</html>
